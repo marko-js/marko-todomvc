@@ -1,31 +1,22 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A basic Marko app.">
-    <title>${$global.meta.pageTitle || "Marko"}</title>
-  </head>
-  <body>
-    <${input.content}/>
-  </body>
-</html>
+client import "todomvc-common/base"
+import "todomvc-common/base.css"
+import "todomvc-app-css/index.css"
 
-<style>
-  html,
-  body {
-    font-family: system-ui;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    color: #fff;
-    background: #15151e;
-  }
-  code {
-    color: #fc0;
-  }
-  a {
-    color: #09c;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en" data-framework="marko">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Marko • TodoMVC</title>
+	</head>
+	<body>
+    <div id="main">
+      <${input.content}/>
+    </div>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>Written by <a href="https://markojs.com">The Marko Team</a></p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+	</body>
+</html>

@@ -1,23 +1,27 @@
-# Thanks for checking out Marko
+# Marko • [TodoMVC](http://todomvc.com)
 
-# Installation
+> A declarative, HTML‑based language that makes building web apps fun.
 
-```
-npm init marko -- --template basic-tags
-cd marko-app
-npm install
-npm run dev
-```
+## Resources
 
-## Overview
+- [Website](https://markojs.com)
+- [Documentation](https://markojs.com/docs)
 
-This project is powered by [@marko/run](https://github.com/marko-js/run).
+### Articles
 
-- Run `npm run dev` to start the development server
-- Run `npm run build` to build a production-ready node.js server
-- Run `npm run preview` to run the production server
+- [Interesting article]()
 
-## Adding Pages
+### Support
 
-Pages map to the directory structure. You can add additional pages by creating files/directories under `src/routes` with `+page.marko` files.  Learn more in the [`@marko/run` docs](https://github.com/marko-js/run/#file-based-routing).
+- [Stack Overflow](http://stackoverflow.com/questions/tagged/marko)
+- [Twitter](http://twitter.com/MarkoDevTeam)
 
+_Let us [know](https://github.com/tastejs/todomvc/issues) if you discover anything worth sharing._
+
+## Implementation
+
+Project built using Marko and Marko Run, based on the `basic` Marko sample app.
+
+## Credit
+
+Created by [The Marko Team](http://markojs.com)

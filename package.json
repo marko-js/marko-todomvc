@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "marko": "^6.0.0"
+    "marko": "^6.0.60",
+    "todomvc-app-css": "^2.4.3",
+    "todomvc-common": "^1.0.5"
   },
   "devDependencies": {
     "@marko/run": "^0.8.0"
