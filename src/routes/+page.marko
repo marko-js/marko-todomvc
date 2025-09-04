@@ -5,32 +5,26 @@ static type Todo = {
 };
 static type Filter = "all" | "active" | "completed";
 
+<let/nextId=0>
 <let/todos=([] as Todo[])>
-
 <let/filter=("all" as Filter)>
-<script>
-  window.addEventListener(
-    "hashchange",
-    () => {
-      filter = (location.hash.slice(2) as Filter) || "all";
-    },
-    {
-      signal: $signal,
-    },
-  );
-</script>
-
 <const/activeCount=todos.reduce(
   (count, todo) => (todo.completed ? count : count + 1),
   0,
 )>
-
-<let/nextId=0>
+<script>
+  window.addEventListener(
+    "hashchange",
+    () => (filter = (location.hash.slice(2) as Filter) || "all"),
+    { signal: $signal },
+  );
+</script>
 
 <section class="todoapp">
   <header class="header">
     <h1>todos</h1>
     <input
+      class="new-todo"
       placeholder="What needs to be done?"
       onKeyDown({ key }, el) {
         const title = el.value.trim();
@@ -38,90 +32,84 @@ static type Filter = "all" | "active" | "completed";
           todos = [{ title, id: nextId++, completed: false }, ...todos];
           el.value = "";
         }
-      }
-      class="new-todo">
+      }>
   </header>
   <if=todos.length>
     <section class="main">
       <input
+        id="toggle-all"
+        class="toggle-all"
         type="checkbox"
         checked=!activeCount
         checkedChange(completed) {
           todos = todos.map((todo) =>
             todo.completed === completed ? todo : { ...todo, completed },
           );
-        }
-        class="toggle-all"
-        id="toggle-all">
+        }>
       <label for="toggle-all">
         Mark all as complete
       </label>
       <ul class="todo-list">
-        <const/filteredTodos=(() => {
-          const withIndex = todos.map((todo, i) => ({ ...todo, index: i }));
-          switch (filter) {
-            case "all":
-              return withIndex;
-            case "active":
-              return withIndex.filter(({ completed }) => !completed);
-            case "completed":
-              return withIndex.filter(({ completed }) => completed);
-          }
-        })()>
-        <for|{ id, title, completed, index }| of=filteredTodos by="id">
-          <let/editing=false>
-          <li class=[
-            "todo",
-            {
-              editing,
-              completed,
-            },
-          ]>
-            <div class="view">
-              <input
-                type="checkbox"
-                checked=completed
-                checkedChange(completed) {
-                  todos = todos.toSpliced(index, 1, { id, title, completed });
-                }
-                class="toggle">
-              <label onDblClick() {
-                editing = true;
-              }>
-                ${title}
-              </label>
-              <button
-                onClick() {
-                  todos = todos.toSpliced(index, 1);
-                }
-                class="destroy"/>
-            </div>
-            <if=editing>
-              <const/done() {
-                editing = false;
-                const title = editEl().value.trim();
-                if (title) {
-                  todos = todos.toSpliced(index, 1, { id, title, completed });
-                }
-              }>
-              <input/editEl
-                value=title
-                onFocusOut=done
-                onKeyUp({ key }) {
-                  if (key === "Enter") {
-                    done();
-                  } else if (key === "Escape") {
-                    editing = false;
+        <for|{ id, title, completed }, i| of=todos by="id">
+          <if=(
+            filter === "all" ||
+            (filter === "completed" && completed) ||
+            (filter === "active" && !completed)
+          )>
+            <let/editing=false>
+            <li class=[
+              "todo",
+              {
+                editing,
+                completed,
+              },
+            ]>
+              <div class="view">
+                <input
+                  class="toggle"
+                  type="checkbox"
+                  checked=completed
+                  checkedChange(completed) {
+                    todos = todos.toSpliced(i, 1, { id, title, completed });
+                  }>
+                <label onDblClick() {
+                  editing = true;
+                }>
+                  ${title}
+                </label>
+                <button
+                  class="destroy"
+                  onClick() {
+                    todos = todos.toSpliced(i, 1);
+                  }/>
+              </div>
+
+              <if=editing>
+                <const/done() {
+                  editing = false;
+                  const title = $textInput().value.trim();
+                  if (title) {
+                    todos = todos.toSpliced(i, 1, { id, title, completed });
                   }
-                }
-                class="edit">
-              <script>
-                const el = editEl();
-                el.focus();
-                el.setSelectionRange(0, el.value.length);
-              </script>
-            </if>
-          </li>
+                }>
+                <input/$textInput
+                  class="edit"
+                  value=title
+                  onFocusOut=done
+                  onKeyUp({ key }) {
+                    if (key === "Enter") {
+                      done();
+                    } else if (key === "Escape") {
+                      editing = false;
+                    }
+                  }>
+                <script>
+                  $textInput().focus();
+                  $textInput().setSelectionRange(0, $textInput().value.length);
+                </script>
+              </if>
+            </li>
+          </if>
         </for>
       </ul>
     </section>
@@ -133,27 +121,39 @@ static type Filter = "all" | "active" | "completed";
       </span>
       <ul class="filters">
         <li>
-          <a href="#/" class=filter === "all" && "selected">
+          <a
+            href="#/"
+            class={
+              selected: filter === "all",
+            }>
             All
           </a>
         </li>
         <li>
-          <a href="#/active" class=filter === "active" && "selected">
+          <a
+            href="#/active"
+            class={
+              selected: filter === "active",
+            }>
             Active
           </a>
         </li>
         <li>
-          <a href="#/completed" class=filter === "completed" && "selected">
+          <a
+            href="#/completed"
+            class={
+              selected: filter === "completed",
+            }>
             Completed
           </a>
         </li>
       </ul>
       <if=activeCount !== todos.length>
         <button
+          class="clear-completed"
           onClick() {
             todos = todos.filter(({ completed }) => !completed);
-          }
-          class="clear-completed">
+          }>
           Clear Completed
         </button>
       </if>
