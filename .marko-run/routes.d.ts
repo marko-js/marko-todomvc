@@ -10,7 +10,7 @@ import type * as Run from "@marko/run";
 declare module "@marko/run" {
 	interface AppData extends Run.DefineApp<{
 		routes: {
-			"/": { verb: "get"; meta: typeof import("../src/routes/+meta.json"); };
+			"/": { verb: "get"; };
 		}
 	}> {}
 }
