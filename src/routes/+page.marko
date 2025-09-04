@@ -116,7 +116,9 @@ static type Filter = "all" | "active" | "completed";
                 }
                 class="edit">
               <script>
-                editEl().focus();
+                const el = editEl();
+                el.focus();
+                el.setSelectionRange(0, el.value.length);
               </script>
             </if>
           </li>
