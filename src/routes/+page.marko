@@ -13,11 +13,9 @@ static type Filter = "all" | "active" | "completed";
   0,
 )>
 <script>
-  window.addEventListener(
-    "hashchange",
-    () => (filter = (location.hash.slice(2) as Filter) || "all"),
-    { signal: $signal },
-  );
+  const updateFilter = () => filter = ((location.hash.slice(2) as Filter) || "all");
+  window.addEventListener("hashchange", updateFilter, { signal: $signal });
+  updateFilter();
 </script>
 
 <section class="todoapp">
